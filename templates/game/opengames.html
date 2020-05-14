@@ -1,0 +1,47 @@
+{% extends "game/gamebase.html" %}
+
+{% block subcontent %}
+<div class="row mx-2">
+	<div class="col">
+		<h1>Open games</h1>
+		{% if open_games.count > 0 %}
+		<p>Choose any game you wish! These games are open to join.</p>
+		{% endif %}
+	</div>
+	
+</div>
+<div class="container-fluid">
+	<div class="d-flex flex-row flex-wrap mx-2">
+		{% for game in open_games %}
+			{% if cur_user != game.player1 %}
+			<a class="text-dark text-decoration-none" href="/game/play:{{ game.id }}">
+			<div class="card text-center card-body m-2 open" style="max-width:20rem;">
+				<h2>{{ game.title }}</h2>
+				<p>Playing against: {{ game.player1 }}</p>
+				<p>For {{ game.max_rounds }} rounds</p>
+			</div>
+			</a>
+			{% else %}
+			<div class="card text-center card-body m-2 text-secondary" style="max-width:20rem;">
+				<h2>{{ game.title }}</h2>
+				<p>Playing against: {{ game.player1 }}</p>
+				<p>For {{ game.max_rounds }} rounds</p>
+			</div>
+			{% endif %}
+		{% empty %}
+			<h4 class="mt-2">None found! Perhaps <a href="/game/create">create a new game</a> so that another player can join?</h4>
+		{% endfor %}
+		<script>
+		$(".card.open").hover(
+			function () {
+				$(this).addClass('bg-primary');
+			}, 
+			function () {
+				$(this).removeClass('bg-primary');
+			}
+		);
+		</script>
+	</div>
+</div>
+	
+{% endblock %}

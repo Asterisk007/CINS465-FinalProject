@@ -1,0 +1,70 @@
+{% extends "core.html" %}
+
+{% block content %}
+<div class="row mx-2">
+	<div class="col">
+		<a class="btn btn-outline-secondary my-2" href="/forum/board/{{ board }}">&lt; Back to {{ board|title }}</a>
+		{% if errors != "" %}
+		<p>There was an error processing your response to this thread:<p>
+		{{ errors }}
+		{% endif %}
+		<div class="card">
+			<div class="card-header">
+				<h3>{{ thread_title }}</h3><br>
+				Thread posted by {{ thread_posted_by }}
+			</div>
+			<div class="card-body">
+				{{ thread_content|linebreaks }}
+				
+			</div>
+			
+		</div>
+		<p class="mx-2">
+			{% comment %} Users can reply to this thread, if they so wish {% endcomment %}
+			{% comment %} 
+			For the sake of saving time, I will not allow users to edit their posts.
+			The internet is forever, so are the words you post. 
+			{% endcomment %}
+			<a class="text-dark" data-toggle="collapse" href="#responseForm" role="button" aria-expanded="false" aria-controls="responseForm">
+				Reply to this thread
+			</a>
+			<script>
+				function open(id){
+					$("#"+id).collapse("show");		
+				}
+				function close(id){
+					$("#"+id).collapse("hide");
+				}
+			</script>
+		</p>
+		<div class="collapse mx-2 my-2" id="responseForm">
+			<table>
+				<tr>
+					<form action="/forum/board/{{ board }}/{{ thread_id }}" method="POST">
+						{% for field in thread_response_form %}
+							{{ field }}
+						{% endfor %}
+						{% csrf_token %}
+						<input type="submit" value="Reply" class="btn btn-primary"/>
+					</form>
+				</tr>
+				<tr>
+					<button class="btn btn-secondary ml-2" type="button" data-toggle="collapse" data-target="#responseForm" aria-expanded="false" aria-controls="responseForm">Cancel</button>
+				</tr>
+			</table>
+		</div>
+
+		{% for user, paragraph in thread_responses %}
+		<div class="card">
+			<div class="card-header">
+				{{ user }}
+			</div>
+			<div class="card-body">
+				{{ paragraph|linebreaks }}
+			</div>
+		</div>
+		{% endfor %}
+
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "core.html" %}
+
+{% block content %}
+<div class="row px-5">
+	<div class="col">
+		<div class="row">
+			<div class="col">
+				<h1>User forums</h1>
+				<p>A place to talk with fellow RPS enthusiasts</p>
+			</div>
+		</div>
+		{% for topic, description, url in forum_topics %}
+		<div class="card mb-2">
+			<a href="/forum/board/{{ url }}" class="text-decoration-none"><div class="card-header">
+				<h3>{{ topic }}</h3>
+			</div>
+			</a>
+			<div class="card-body">
+				<h5>{{ description }}</h5>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

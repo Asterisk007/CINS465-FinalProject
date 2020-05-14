@@ -21,10 +21,24 @@ import game.views as game_views
 import leaderboard.views as leaderboard_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('login/', core_views.login),
-    path('register/', core_views.register),
-    path('/', core_views.dashboard)#,
-    # TODO: Add views for games between players
-    #path('')
+    path("admin/", admin.site.urls),
+    path("login", core_views.rps_login),
+    path("logout/", core_views.rps_logout),
+    path("register", core_views.register),
+    path("", core_views.dashboard),
+    path("game/", game_views.open_games),
+    path("game/join:<int:gameid>", game_views.open_games),
+    path("game/create", game_views.create_game),
+    path("game/play:<int:gameid>", game_views.play_game),
+    path("game/playround:<int:gameid>", game_views.play_round),
+    # This url is purely for testing purposes so that I can purge things.
+    # !!!!!!!!
+    path("game/delete:<int:gameid>", game_views.delete), # <<<<<<< TODO: FIXME: Delete this! <<<<<<<<
+    # !!!!!!!!
+    path("forum/", forum_views.forum_boards_list, name="forum"),
+    path("forum/board/<str:board>", forum_views.forum_board),
+    path("forum/board/<str:board>/<int:thread_id>", forum_views.view_thread),
+    path("forum/post:topic=<str:topic>", forum_views.forum_newpost),
+    path("leaderboard/", leaderboard_views.leaderboard),
+    #path("404", core_views.not_found, name="404")
 ]

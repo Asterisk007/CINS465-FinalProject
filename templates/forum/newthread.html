@@ -1,0 +1,19 @@
+{% extends "core.html" %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col mx-auto">
+			<h1>New Thread</h1>
+			{{ errors }}
+			<form action="/forum/post:topic={{ post_topic }}" method="post">
+				{% for field in form %}
+					{{ field }}
+				{% endfor %}
+				{% csrf_token %}
+				<input type="submit" class="btn btn-primary" value="Post"/>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

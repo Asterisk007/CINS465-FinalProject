@@ -1,0 +1,53 @@
+{% extends "core.html" %}
+
+{% block content %}
+<div class="row mx-2">
+	<div class="col">
+		<h1>Rock Paper Scissors Leaderboard:</h1>
+		{% if listings %}
+		<p>These players have earned the top ranking by winning games.</p>
+		{% endif %}
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col">
+			{% if listings %}
+			<table class="table">
+				<tr>
+					<th>
+						#
+					</th>
+					<th>
+						Player
+					</th>
+					<th>
+						Total games won
+					</th>
+				</tr>
+			{% endif %}
+			{% for listing in listings %}
+			{% comment %} {% if listing.score > 0 %} {% endcomment %}
+			<tr>
+				<td>
+					{{ forloop.counter }}
+				</td>
+				<td>
+					{{ listing.user }}
+				</td>
+				<td>
+					{{ listing.score }}
+				</td>
+			</tr>
+			{% comment %} {% endif %} {% endcomment %}
+			{% empty %}
+			<h2>No players have acquired a ranking yet!</h2>
+			<p>To get yourself on this board, win at least one game of Rock Paper Scissors</p>
+			{% endfor %}
+			{% if listings %}
+			</table>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}

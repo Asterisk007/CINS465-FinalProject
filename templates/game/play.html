@@ -1,0 +1,27 @@
+{% extends "core.html" %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<h2>Playing against: {% if cur_user == cur_game.player1 %} {{ cur_game.player2 }} {% else %} {{ cur_game.player1 }} {% endif %}</h2>
+			<h2>Round {{ cur_game.current_round }} of {{ cur_game.max_rounds }}</h2>
+			<h2>Score:</h2>
+			<table class="table">
+			<tr><th>{{ cur_game.player1 }}</th><th>{{ cur_game.player2 }}</th></tr>
+			<tr><td>{{ cur_game.player1wins }}</td><td>{{ cur_game.player2wins }}</td></tr>
+			</table>
+			<h3>Select move:</h3>
+			<form action="/game/playround:{{ cur_game.id }}" method="POST">
+				{% for move in form.option %}
+					{% if move.choice_label != "Undecided" %}
+						{{ move }}<br>
+					{% endif %}
+				{% endfor %}
+				{% csrf_token %}
+				<input type="submit" value="Play selected move" class="btn btn-primary"/>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

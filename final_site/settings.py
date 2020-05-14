@@ -26,6 +26,8 @@ SECRET_KEY = '@ixyh&sbyzl=vf64wv!2=k2uarib1h!&^9u7lk#pfl2-u4aad+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+APPEND_SLASH = False
+
 ALLOWED_HOSTS = []
 
 
@@ -38,6 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core',
+    'forum',
+    'game',
+    'leaderboard'
 ]
 
 MIDDLEWARE = [

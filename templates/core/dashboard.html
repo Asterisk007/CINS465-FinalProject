@@ -1,7 +1,96 @@
 {% extends "core.html" %}
 
 {% block content %}
-<div class="container">
-
+<div class="row mx-2">
+	<div class="col">
+		<h1>Waiting for your move:</h1>
+	</div>
+</div>
+<div class="container-fluid">
+	<div class="d-flex flex-row flex-wrap mx-2">
+		{% for game in make_move %}
+			<a class="text-dark text-decoration-none" href="/game/playround:{{ game.id }}">
+			<div class="card text-center px-4 pt-2 pb-n2 m-2 in-progress" style="max-width:20rem;">
+				<h2 class="border border-primary rounded p-2">{{ game.title }}</h2>
+				<p>Playing against: {{ game.player2 }}</p>
+				<p>Round {{ game.current_round }} of {{ game.max_rounds }}</p>
+				<p>Score - {{ game.player1wins }}:{{ game.player2wins }}</p>
+			</div>
+			</a>
+		{% empty %}
+			<p>None found!</p>
+		{% endfor %}
+		<script>
+		$(".card.in-progress").hover(
+			function () {
+				$(this).addClass('border border-secondary');
+			}, 
+			function () {
+				$(this).removeClass('border border-secondary');
+			}
+		);
+		</script>
+	</div>
+</div>
+<div class="row mx-2">
+	<div class="col">
+		<h1>Standby for other player:</h1>
+	</div>
+</div>
+<div class="container-fluid">
+	<div class="d-flex flex-row flex-wrap mx-2">
+		{% for game in wait_for_player %}
+			<div class="card text-center px-4 pt-2 pb-n2 m-2" style="max-width:20rem;">
+				<h2>{{ game.title }}</h2>
+				{% if game.player2 is not None %}
+				<p>Playing against: {{ game.player2 }}</p>
+				<p>Round {{ game.current_round }} of {{ game.max_rounds }}</p>
+				<p>Score - {{ game.player1wins }}:{{ game.player2wins }}</p>
+				{% else %}
+				<p>Wait for another player to join this game.</p>
+				{% endif %}
+			</div>
+		{% empty %}
+			<p>None found!</p>
+		{% endfor %}
+	</div>
+</div>
+<div class="row mx-2">
+	<div class="col">
+		<h1>Games you have participated in:</h1>
+	</div>
+</div>
+<div class="container-fluid">
+	<div class="d-flex flex-row flex-wrap mx-2">
+		{% for game in concluded_games %}
+			<div class="card text-center px-4 pt-2 pb-n2 m-2 text-secondary" style="max-width:20rem;">
+				<h2>{{ game.title }}</h2>
+				<p>Playing against:
+					{% if cur_user == game.player1 %}
+					{{ game.player2 }}
+					{% else %}
+					{{ game.player1 }}
+					{% endif %}
+				</p>
+				<p>Score - {{ game.player1wins }}:{{ game.player2wins }}</p>
+				<p>
+					Winner:
+					{% if game.player1wins > game.player2wins and game.player1 == cur_user %}
+					you
+					{% elif game.player2wins > game.player1wins and game.player2 == cur_user %}
+					you
+					{% else %}
+						{% if game.player1 == cur_user %}
+							{{ game.player2 }}
+						{% else %}
+							{{ game.player1 }}
+						{% endif %}
+					{% endif %}
+				</p>
+			</div>
+		{% empty %}
+			<p>None found!</p>
+		{% endfor %}
+	</div>
 </div>
 {% endblock %}

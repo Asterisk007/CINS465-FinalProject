@@ -1,0 +1,16 @@
+{% extends "game/gamebase.html" %}
+
+{% block subcontent %}
+<div class="row mx-2">
+	<div class="col">
+		<h1>Create a new game</h1>
+		<form action="/game/create" method="POST">
+			<table>
+				{{ form.as_table }}
+			</table>
+			{% csrf_token %}
+			<input class="btn btn-primary" type="submit" value="Create game"/>
+		</form>
+	</div>
+</div>	
+{% endblock %}

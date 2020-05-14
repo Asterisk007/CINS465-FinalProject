@@ -1,0 +1,16 @@
+{% extends "core.html" %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<form action="/game/playround:{{ cur_game.id }}" method="POST">
+				<h1>Standby for {% if cur_user == cur_game.player1 %} {{ cur_game.player2 }} {% else %} {{ cur_game.player1 }} {% endif %}</h1>
+				{{ form }}
+				{% csrf_token %}
+				<input class="btn btn-primary" type="submit" value="Click here to Continue"/>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "core.html" %}
+
+{% block content %}
+<div class="row px-5">
+	<div class="col">
+		<a class="btn btn-outline-secondary my-2" href="/forum/">&lt; Back to topics</a>
+		<div class="row">
+			<div class="col">
+				<h1>{{ forum_topic }}</h1>
+				<p>{{ topic_description }}</p>
+			</div>
+			<div class="col my-auto justify-content-end">
+				<a class="btn btn-primary" href="/forum/post:topic={{ new_thread_topic }}">+ New Thread</a>
+			</div>
+		</div>
+		<ul class="list-group">
+		{% for title, user, thread_id in threads %}
+			<li class="list-group-item" onclick="location.href='/forum/board/{{ forum_board }}/{{ thread_id }}'" style="cursor: pointer;">
+				<h2>{{ title }}</h2><br>
+				<h4>Thread started by {{ user }}</h4>
+			</li>
+		{% endfor %}
+		</ul>
+		<script>
+			$("li").hover(
+				function () {
+					$(this).addClass('active');
+				}, 
+				function () {
+					$(this).removeClass('active');
+				}
+			);
+		</script>
+	</div>
+</div>
+{% endblock %}

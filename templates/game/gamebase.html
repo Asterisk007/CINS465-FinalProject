@@ -1,0 +1,22 @@
+{% extends "core.html" %}
+
+{% block content %}
+<ul class="nav nav-tabs mt-2 ml-2 mr-2">
+  <li class="nav-item">
+	{% if first_active %}
+    <a class="nav-link active" href="/game">Open games</a>
+	{% else %}
+	<a class="nav-link" href="/game">Open games</a>
+	{% endif %}
+  </li>
+  <li class="nav-item">
+	{% if second_active %}
+    <a class="nav-link active" href="/game/create">Create game</a>
+	{% else %}
+	<a class="nav-link" href="/game/create">Create game</a>
+	{% endif %}
+  </li>
+</ul>
+{% block subcontent %}
+{% endblock %}
+{% endblock %}

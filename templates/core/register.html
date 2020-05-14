@@ -1,0 +1,34 @@
+{% extends "core.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Register</h1>
+            <p>Grants access to:
+			<ul>
+				<li>
+					The Rock Paper Scissors game
+				</li>
+				<li>
+					User forums
+				</li>
+				<li>
+					Game leaderboards
+				</li>
+				<li>
+					Your personal dashboard, which displays your current games and stats
+				</li>
+			</ul>
+			</p>
+            <form action="/register/" method="POST">
+                <table>
+                    {{ join_form.as_table }}
+                </table>
+                {% csrf_token %}
+                <input type="submit" class="btn btn-primary" value="Join"/>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
