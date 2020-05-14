@@ -33,7 +33,7 @@ urlpatterns = [
     path("game/playround:<int:gameid>", game_views.play_round),
     # This url is purely for testing purposes so that I can purge things.
     # !!!!!!!!
-    path("game/delete:<int:gameid>", game_views.delete), # <<<<<<< TODO: FIXME: Delete this! <<<<<<<<
+    #path("game/delete:<int:gameid>", game_views.delete), # <<<<<<< TODO: FIXME: Delete this! <<<<<<<<
     # !!!!!!!!
     path("forum/", forum_views.forum_boards_list, name="forum"),
     path("forum/board/<str:board>", forum_views.forum_board),

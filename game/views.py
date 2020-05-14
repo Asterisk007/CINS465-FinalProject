@@ -111,6 +111,7 @@ def play_round(request, gameid):
 	else:
 		return render(request, "game/closed.html")
 
+'''
 # Only for testing.
 # FIXME: Delete this or comment it out after development!
 def delete(request, gameid=None):
@@ -118,3 +119,4 @@ def delete(request, gameid=None):
 	if game.count() > 0:
 		game.delete()
 	return redirect("/game/")
+'''
