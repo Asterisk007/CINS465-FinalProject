@@ -14,15 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from rest_framework import routers
 import core.views as core_views
 import forum.views as forum_views
 import game.views as game_views
 import leaderboard.views as leaderboard_views
 
+router = routers.DefaultRouter()
+router.register(r'users', core_views.UserViewSet)
+router.register(r'games', game_views.GameViewSet)
+router.register(r'threads', forum_views.ThreadViewSet)
+router.register(r'thread-responses', forum_views.ThreadResponseViewSet)
+router.register(r'board-categories', forum_views.BoardCategoryViewSet)
+router.register(r'leaderboard', leaderboard_views.LeaderboardViewSet)
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("login", core_views.rps_login),
+    path("login/", core_views.rps_login),
     path("logout/", core_views.rps_logout),
     path("register", core_views.register),
     path("", core_views.dashboard),
@@ -33,12 +43,13 @@ urlpatterns = [
     path("game/playround:<int:gameid>", game_views.play_round),
     # This url is purely for testing purposes so that I can purge things.
     # !!!!!!!!
-    path("game/delete:<int:gameid>", game_views.delete), # <<<<<<< TODO: FIXME: Delete this! <<<<<<<<
+    # path("game/delete:<int:gameid>", game_views.delete), # <<<<<<< TODO: FIXME: Delete this! <<<<<<<<
     # !!!!!!!!
     path("forum/", forum_views.forum_boards_list, name="forum"),
     path("forum/board/<str:board>", forum_views.forum_board),
     path("forum/board/<str:board>/<int:thread_id>", forum_views.view_thread),
     path("forum/post:topic=<str:topic>", forum_views.forum_newpost),
     path("leaderboard/", leaderboard_views.leaderboard),
-    #path("404", core_views.not_found, name="404")
+    path('api/v1/', include(router.urls)),
+    path('api-auth/v1/', include('rest_framework.urls', namespace='rest_framework'))
 ]

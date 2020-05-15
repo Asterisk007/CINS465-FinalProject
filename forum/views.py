@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from forum.models import Topic, DiscussionThread, ThreadResponse, FORUM_TOPICS, FORUM_TOPIC_DESCRIPTION, FORUM_URL
+from forum.models import BoardCategorySerializer, ThreadSerializer, ThreadResponseSerializer
 from forum.forms import DiscussionThreadForm, ThreadResponseForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from rest_framework import viewsets, permissions
 
 # User forum boards
 # Each board contains a separate topic.
-@login_required(login_url="/login")
+@login_required(login_url="/login/")
 def forum_boards_list(request):
 	forum_topics = []
 	idx = 0
@@ -17,11 +19,10 @@ def forum_boards_list(request):
 		"title":"Forum",
 		"forum_topics":forum_topics
 	}
-	#DiscussionThread.objects.all().delete()
-	print(DiscussionThread.objects.all().values())
+	#print(DiscussionThread.objects.all().values())
 	return render(request, "forum/forum.html", data)
-	
-@login_required(login_url="/login")
+
+@login_required(login_url="/login/")
 def forum_newpost(request, topic):
 	if (topic == "general"):
 		form_topic = "gen"
@@ -55,7 +56,7 @@ def forum_newpost(request, topic):
 	return render(request, "forum/newthread.html", data)
 
 
-@login_required(login_url="/login")
+@login_required(login_url="/login/")
 def forum_board(request, board):
 	# Generate a table entry for this topic if it does not already exist.
 	topic_field_str = ""
@@ -70,7 +71,7 @@ def forum_board(request, board):
 		topic_field_str = "other"
 	
 	topic = Topic.objects.filter(type=topic_field_str)
-	print(topic.count())
+	#print(topic.count())
 
 	if (topic.count() == 0):
 		topic = Topic(type = topic_field_str)
@@ -125,6 +126,7 @@ def forum_board(request, board):
 	
 	return render(request, "forum/forumboard.html", data)
 
+@login_required(login_url="/login/")
 def view_thread(request, board, thread_id):
 	# Get the table entry for this topic, since it likely already exists.
 	topic_field_str = ""
@@ -190,4 +192,19 @@ def view_thread(request, board, thread_id):
 		}
 		return render(request, "forum/viewthread.html", data)
 	else:
-		return redirect("/404")
+		raise Http404("Thread does not exist")
+
+class ThreadViewSet(viewsets.ModelViewSet):
+	queryset = DiscussionThread.objects.all()
+	serializer_class = ThreadSerializer
+	permission_classes = [permissions.IsAuthenticated]
+
+class ThreadResponseViewSet(viewsets.ModelViewSet):
+	queryset = ThreadResponse.objects.all()
+	serializer_class = ThreadResponseSerializer
+	permission_classes = [permissions.IsAuthenticated]
+
+class BoardCategoryViewSet(viewsets.ModelViewSet):
+	queryset = Topic.objects.all()
+	serializer_class = BoardCategorySerializer
+	permission_classes = [permissions.IsAuthenticated]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from leaderboard.models import PlayerScore
+from rest_framework import serializers
 
 # The central game class, for use in listing and completing games
 class Game(models.Model):
@@ -91,9 +92,9 @@ class GameRound(models.Model):
 		elif (self.game.player2 == user and self.player2_move == "U"):
 			self.player2_move = move
 		
-		print(self.player1_move)
-		print(self.player2_move)
-		print(self.game.finished)
+		#print(self.player1_move)
+		#print(self.player2_move)
+		#print(self.game.finished)
 
 		'''
 		# Player has submitted their move, but their opponent has not.
@@ -171,7 +172,7 @@ class GameRound(models.Model):
 						player_stat, created = PlayerScore.objects.get_or_create(user = self.game.player2)
 					player_stat.score += 1
 					player_stat.save()
-					print("Game concluded")
+					#print("Game concluded")
 					return 2
 				# Otherwise, run a tiebreaker round. Reset players' moves.
 				else:
@@ -193,4 +194,7 @@ class GameRound(models.Model):
 				self.player2_move = "U"
 				return 1
 			
-					
+class GameSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Game
+		fields = '__all__'

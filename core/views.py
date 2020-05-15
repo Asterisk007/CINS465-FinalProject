@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from game.models import Game, GameRound
+from core.models import UserSerializer
+from rest_framework import viewsets, permissions
 
 from core.forms import JoinForm, LoginForm
 
-@login_required(login_url='/login')
+@login_required(login_url='/login/')
 def dashboard(request):
 	make_move = []
 	for item in Game.objects.filter(player1 = request.user, finished = False):
@@ -82,5 +84,7 @@ def register(request):
 	else:
 		return render(request, "core/register.html", {"title":"Register", "join_form": JoinForm()})
 
-def not_found(request):
-	return render(request, "core/404.html")
+class UserViewSet(viewsets.ModelViewSet):
+	queryset = User.objects.all()
+	serializer_class = UserSerializer
+	permission_classes = [permissions.IsAuthenticated]

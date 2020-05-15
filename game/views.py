@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from game.models import Game, GameRound, MOVESET
+from game.models import Game, GameRound, MOVESET, GameSerializer
 from game.forms import CreateGameForm, SelectMoveForm
+from rest_framework import viewsets, permissions
 
 # Available games to play
 @login_required(login_url="/login/")
@@ -67,7 +68,7 @@ def play_game(request, gameid=None):
 			return render(request, "game/closed.html")
 
 # Carry out a game between two players
-@login_required(login_url="/login")
+@login_required(login_url="/login/")
 def play_round(request, gameid):
 	# Check that this game exists.
 	if Game.objects.filter(id = gameid).count() == 0:
@@ -80,7 +81,7 @@ def play_round(request, gameid):
 		response_code = -1
 		# Player has made a move
 		if request.method == "POST":
-			print("POST")
+			#print("POST")
 			# Get the round object
 			cur_round = GameRound.objects.get(game = cur_game)
 			player_move = SelectMoveForm(request.POST)
@@ -111,6 +112,7 @@ def play_round(request, gameid):
 	else:
 		return render(request, "game/closed.html")
 
+'''
 # Only for testing.
 # FIXME: Delete this or comment it out after development!
 def delete(request, gameid=None):
@@ -118,3 +120,9 @@ def delete(request, gameid=None):
 	if game.count() > 0:
 		game.delete()
 	return redirect("/game/")
+'''
+
+class GameViewSet(viewsets.ModelViewSet):
+	queryset = Game.objects.all()
+	serializer_class = GameSerializer
+	permission_classes = [permissions.IsAuthenticated]

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from core.models import UserSerializer
+from rest_framework import serializers
 
 # RPS Forum models
 
@@ -66,3 +68,20 @@ class ThreadResponse(models.Model):
 		max_length=10000,
 		blank=False
 	)
+
+class BoardCategorySerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Topic
+		fields = '__all__'
+
+class ThreadSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		user = UserSerializer()
+		model = DiscussionThread
+		fields = '__all__'
+
+class ThreadResponseSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		user = UserSerializer()
+		model = ThreadResponse
+		fields = '__all__'

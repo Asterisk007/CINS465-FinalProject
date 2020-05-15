@@ -2,32 +2,42 @@
 
 {% block content %}
 <div class="container">
+	<div class="row mb-2">
+        <h1>Register</h1>
+	</div>
     <div class="row">
+		<div class="col mb-2">
+			<form action="/register/" method="POST">
+				<table class="table">
+					{{ join_form.as_table }}
+				</table>
+				{% csrf_token %}
+				<input type="submit" class="btn btn-primary" value="Join"/>
+				<a href="/" class="btn btn-secondary">Cancel</a>
+			</form>
+		</div>
         <div class="col">
-            <h1>Register</h1>
-            <p>Grants access to:
-			<ul>
-				<li>
-					The Rock Paper Scissors game
-				</li>
-				<li>
-					User forums
-				</li>
-				<li>
-					Game leaderboards
-				</li>
-				<li>
-					Your personal dashboard, which displays your current games and stats
-				</li>
-			</ul>
-			</p>
-            <form action="/register/" method="POST">
-                <table>
-                    {{ join_form.as_table }}
-                </table>
-                {% csrf_token %}
-                <input type="submit" class="btn btn-primary" value="Join"/>
-            </form>
+			<div class="card">
+				<div class="card-header">
+					Grants access to:
+				</div>
+				<div class="card-body">
+					<ul>
+						<li>
+							The Rock Paper Scissors game
+						</li>
+						<li>
+							User forums
+						</li>
+						<li>
+							Game leaderboards
+						</li>
+						<li>
+							Your personal dashboard, which displays games you are currently playing, and have played in the past.
+						</li>
+					</ul>
+				</div>
+			</div>
         </div>
     </div>
 </div>
