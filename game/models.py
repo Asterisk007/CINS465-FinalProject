@@ -75,15 +75,6 @@ class GameRound(models.Model):
 	3: run tiebreaker
 	4: standby for other player
 	'''
-	# Once players each submit their move, redirect them to their dashboard.
-	# (Probably the most hacky workaround I've come up with)
-
-	# Instead of a continuous RPS game, players will be playing 'rounds'. For each round, a player
-	# submits their move, then gets redirected to their dashboard where they'll get to play a round
-	# if they haven't submitted their move already. If they have, the card says 'standby for other player'.
-
-	# This way, I don't have to account for either player doing something weird. The downside to this, of course,
-	# is a worse user experience. But at this point, I need a hacky workaround so I can finish this project.
 	def set_move(self, user, move):
 		# Player 1's move
 		if (self.game.player1 == user and self.player1_move == "U"):
@@ -182,8 +173,17 @@ class GameRound(models.Model):
 					self.player2_move = "U"
 					return 3
 			elif (self.game.current_round >= self.game.max_rounds):
+				player1_score = self.game.player1wins
+				player2_score = self.game.player2wins
 				self.game.open = False
 				self.game.finished = True
+				# Save player's score.
+				if (player1_score > player2_score):
+					player_stat, created = PlayerScore.objects.get_or_create(user = self.game.player1)
+				else:
+					player_stat, created = PlayerScore.objects.get_or_create(user = self.game.player2)
+				player_stat.score += 1
+				player_stat.save()
 				self.game.save()
 				return 2
 			# Only when a round has finished can we reset both players' moves.

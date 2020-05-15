@@ -8,6 +8,7 @@ from leaderboard.models import PlayerScore, LeaderboardSerializer
 @login_required(login_url="/login/")
 def leaderboard(request):
 	listings = PlayerScore.objects.all().order_by("-score")
+	print(listings)
 	data = {
 		"title":"Leaderboard",
 		"listings":listings

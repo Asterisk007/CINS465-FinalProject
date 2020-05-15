@@ -92,7 +92,15 @@ def play_round(request, gameid):
 			else:
 				print(player_move.errors)
 			
-			# Once user has submitted a move, redirect them to their dashboard.
+			# Once players each submit their move, redirect them to their dashboard.
+			# (Probably the most hacky workaround I've come up with)
+
+			# Instead of a continuous RPS game, players will be playing 'rounds'. For each round, a player
+			# submits their move, then gets redirected to their dashboard where they'll get to play a round
+			# if they haven't submitted their move already. If they have, the card says 'standby for other player'.
+
+			# This way, I don't have to account for either player doing something weird. The downside to this, of course,
+			# is a worse user experience. But at this point, I need a hacky workaround so I can finish this project.
 			return redirect("/")
 			
 		if GameRound.objects.filter(game = cur_game).count() == 0:

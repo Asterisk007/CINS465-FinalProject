@@ -31,10 +31,9 @@ router.register(r'leaderboard', leaderboard_views.LeaderboardViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("login", core_views.rps_login),
     path("login/", core_views.rps_login),
     path("logout/", core_views.rps_logout),
-    path("register", core_views.register),
+    path("register/", core_views.register),
     path("", core_views.dashboard),
     path("game/", game_views.open_games),
     path("game/join:<int:gameid>", game_views.open_games),

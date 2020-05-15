@@ -81,6 +81,7 @@ def register(request):
 			return redirect("/")
 		else:
 			print(join_form.errors)
+			return redirect("/register/")
 	else:
 		return render(request, "core/register.html", {"title":"Register", "join_form": JoinForm()})
 

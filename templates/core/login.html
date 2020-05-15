@@ -5,13 +5,13 @@
     <div class="row">
         <div class="col">
             <h1>User login:</h1>
-            <form action="/login" method="POST">
+            <form action="/login/" method="POST">
                 <table>
                 {{ login_form.as_table }}
                 </table>
                 {% csrf_token %}
+                <p class="mt-2">Don't have a username and password? <a href="/register/">Register now.</a></p>
                 <input type="submit" class="btn btn-primary" value="Login"/>
-                <p class="mt-2">Don't have one? <a href="/register">Register a username and password.</a></p>
             </form>
         </div>
     </div>
